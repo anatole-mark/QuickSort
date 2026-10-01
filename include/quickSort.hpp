@@ -23,7 +23,7 @@ namespace sort
     }
 
     template<typename T, typename Cmp>
-    size_t hoaresPartition(T* first, T* last, T pivot, Cmp comp)
+    static size_t hoaresPartition(T* first, T* last, T pivot, Cmp comp)
     {
         T* l{ first };
         T* r{ last - 1 };
