@@ -3,8 +3,12 @@
 #include <cstdint>
 #include <iostream>
 
-namespace quicksort
+// #define DEBUG
+
+namespace sort
 {
+    constexpr size_t INSERTION_THRESHOLD = 25;
+
     template<typename T>
     void printArray(T* first, T* last)
     {
@@ -41,17 +45,18 @@ namespace quicksort
             --r;
         }
 
+        #ifdef DEBUG
         std::cout << "Printing from Hoare's partition:\n";
         printArray(first, last);
+        #endif
+
         return ind;
     }
 
     template<typename T, typename Cmp>
-    void iterSort(T* first, T* last, Cmp comp)
+    void insertionSort(T* first, T* last, Cmp comp)
     {
-        const size_t n = last - first;
-
-        if (n < 2) return;
+        if (last - first < 2) return;
 
         T* i = first + 1;
 
@@ -67,41 +72,46 @@ namespace quicksort
             ++i;
         }
 
-        std::cout << "Printing from Iterative sort:\n";
+        #ifdef DEBUG
+        std::cout << "Printing from Insertion sort:\n";
         printArray(first, last);
+        #endif
     }
 
     template <typename T, typename Cmp>
-    void sort(T* first, T* last, Cmp comp)
+    void quicksort(T* first, T* last, Cmp comp)
     {
-        if (last - first < 2) return;
-
-        if (last - first == 2)
+        while (last - first >= 2)
         {
-            iterSort(first, last, comp);
-            return;
+            if (last - first <= INSERTION_THRESHOLD)
+            {
+                insertionSort(first, last, comp);
+                return;
+            }
+
+            T* mid = first + (last - first) / 2;
+            T pivot = (*first / 3) + (*mid / 3) + (*(last - 1) / 3);
+
+            size_t partition = hoaresPartition(first, last, pivot, comp);
+
+            const size_t l{ partition };
+            const size_t r{ last - first - partition };
+
+            if (l < r)
+            {
+                quicksort(first, first + partition, comp);
+                first = first + partition;
+            }
+            else
+            {
+                quicksort(first + partition, last, comp);
+                last = first + partition;
+            }
         }
 
-        T* mid = first + (last - first) / 2;
-        T pivot = (*first + *mid + *(last - 1)) / 3;
-
-        size_t partition = hoaresPartition(first, last, pivot, comp);
-
-        const size_t l{ partition };
-        const size_t r{ last - first - partition };
-
-        if (l < r)
-        {
-            sort(first, first + partition, comp);
-            iterSort(first + partition, last, comp);
-        }
-        else
-        {
-            sort(first + partition, last, comp);
-            iterSort(first, first + partition, comp);
-        }
-
+        #ifdef DEBUG
         std::cout << "Printing from sort:\n";
         printArray(first, last);
+        #endif
     }
 }
