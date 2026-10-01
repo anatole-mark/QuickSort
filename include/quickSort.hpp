@@ -5,6 +5,19 @@
 
 namespace quicksort
 {
+    template<typename T>
+    void printArray(T* first, T* last)
+    {
+        T* i = first;
+
+        while (i < last)
+        {
+            std::cout << *(i++) << " ";
+        }
+
+        std::cout << "\n";
+    }
+
     template<typename T, typename Cmp>
     size_t hoaresPartition(T* first, T* last, T pivot, Cmp comp)
     {
@@ -19,7 +32,7 @@ namespace quicksort
 
             if (l > r)
             {
-                ind = l - first - 1;
+                ind = l - first;
                 break;
             }
 
@@ -28,34 +41,46 @@ namespace quicksort
             --r;
         }
 
+        std::cout << "Printing from Hoare's partition:\n";
+        printArray(first, last);
         return ind;
     }
 
     template<typename T, typename Cmp>
     void iterSort(T* first, T* last, Cmp comp)
     {
-        size_t n = last - first;
+        const size_t n = last - first;
 
         if (n < 2) return;
 
-        for (size_t i = 2; i < n; ++i)
+        T* i = first + 1;
+
+        while (i < last)
         {
-            for (size_t j = 0; j < i - 1; ++j)
+            while (i > first && comp(*i, *(i - 1)))
             {
-                if (comp(*(first + j), *(first + j + 1)))
-                {
-                    T temp = std::move(*(first + j));
-                    *(first + j) = std::move(*(first + j + 1));
-                    *(first + j + 1) = std::move(temp);
-                }
+                T temp = std::move(*i);
+                *i = std::move(*(i - 1));
+                *(i - 1) = std::move(temp);
+                --i;
             }
+            ++i;
         }
+
+        std::cout << "Printing from Iterative sort:\n";
+        printArray(first, last);
     }
 
     template <typename T, typename Cmp>
     void sort(T* first, T* last, Cmp comp)
     {
         if (last - first < 2) return;
+
+        if (last - first == 2)
+        {
+            iterSort(first, last, comp);
+            return;
+        }
 
         T* mid = first + (last - first) / 2;
         T pivot = (*first + *mid + *(last - 1)) / 3;
@@ -75,5 +100,8 @@ namespace quicksort
             sort(first + partition, last, comp);
             iterSort(first, first + partition, comp);
         }
+
+        std::cout << "Printing from sort:\n";
+        printArray(first, last);
     }
 }
