@@ -1,30 +1,17 @@
 #pragma once
 
 #include <cstdint>
-#include <iostream>
-
-// #define DEBUG
+#include "utility.hpp"
 
 namespace sort
 {
     constexpr size_t INSERTION_THRESHOLD = 25;
 
-    template<typename T>
-    void printArray(T* first, T* last)
-    {
-        T* i = first;
-
-        while (i < last)
-        {
-            std::cout << *(i++) << " ";
-        }
-
-        std::cout << "\n";
-    }
-
     template<typename T, typename Cmp>
-    static size_t hoaresPartition(T* first, T* last, T pivot, Cmp comp)
+    static size_t hoaresPartition(T* first, T* last, Cmp comp)
     {
+        T pivot = utility::median(first, last, comp);
+
         T* l{ first };
         T* r{ last - 1 };
         size_t ind = last - first;
@@ -40,15 +27,10 @@ namespace sort
                 break;
             }
 
-            std::swap(*l, *r);
+            utility::swap(*l, *r);
             ++l;
             --r;
         }
-
-        #ifdef DEBUG
-        std::cout << "Printing from Hoare's partition:\n";
-        printArray(first, last);
-        #endif
 
         return ind;
     }
@@ -64,18 +46,11 @@ namespace sort
         {
             while (i > first && comp(*i, *(i - 1)))
             {
-                T temp = std::move(*i);
-                *i = std::move(*(i - 1));
-                *(i - 1) = std::move(temp);
+                utility::swap(*i, *(i - 1));
                 --i;
             }
             ++i;
         }
-
-        #ifdef DEBUG
-        std::cout << "Printing from Insertion sort:\n";
-        printArray(first, last);
-        #endif
     }
 
     template <typename T, typename Cmp>
@@ -89,10 +64,7 @@ namespace sort
                 return;
             }
 
-            T* mid = first + (last - first) / 2;
-            T pivot = (*first / 3) + (*mid / 3) + (*(last - 1) / 3);
-
-            size_t partition = hoaresPartition(first, last, pivot, comp);
+            size_t partition = hoaresPartition(first, last, comp);
 
             const size_t l{ partition };
             const size_t r{ last - first - partition };
@@ -108,10 +80,5 @@ namespace sort
                 last = first + partition;
             }
         }
-
-        #ifdef DEBUG
-        std::cout << "Printing from sort:\n";
-        printArray(first, last);
-        #endif
     }
 }

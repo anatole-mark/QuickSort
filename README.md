@@ -6,5 +6,6 @@ the larger part is sorted iteratively.
 
 ### Features
 - Makes use of templates
+- Move semantics are applied to sort elements where possible
 - INSERTION_THRESHOLD is the parameter used to switch the sorting algorithm to insertion sort while processing a smaller structure. It's used to avoid the overhead of implemented hybrid algorithm when appropriate
 - Google Tests
