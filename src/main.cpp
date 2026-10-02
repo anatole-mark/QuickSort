@@ -28,7 +28,7 @@ int main()
     // benchmarking parameter
     constexpr size_t NUMBER_OF_ITERATIONS_PER_EPOCH = 10000;
 
-    constexpr size_t sz = 50;
+    constexpr size_t sz = 60;
 
     int dummy[sz];
     int arrayHybridSort[sz];
