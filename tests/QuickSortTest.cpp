@@ -215,7 +215,7 @@ TEST(QuickSortTest, Strings)
 {
     std::string a[TEST_SIZE];
 
-    constexpr std::string words[] = {
+    const std::string words[] = {
         "banana",
         "apple",
         "orange",
