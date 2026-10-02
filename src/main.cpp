@@ -28,7 +28,7 @@ int main()
     // benchmarking parameter
     constexpr size_t NUMBER_OF_ITERATIONS_PER_EPOCH = 10000;
 
-    constexpr size_t sz = 60;
+    constexpr size_t sz = 50;
 
     int dummy[sz];
     int arrayHybridSort[sz];
@@ -72,7 +72,7 @@ int main()
 
     #ifdef WRITE_TO_FILE
     std::ofstream fileOut;
-    fileOut.open("../benchmark.csv", std::ios_base::app);
+    fileOut.open("../data/benchmark.csv", std::ios_base::app);
 
     fileOut << sz << ",";
     fileOut << insertionSortBenchmark.results()[0].average(
