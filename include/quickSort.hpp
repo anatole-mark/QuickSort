@@ -1,11 +1,11 @@
 #pragma once
 
-#include <cstdint>
+#include <cstddef>
 #include "utility.hpp"
 
 namespace sort
 {
-    constexpr size_t INSERTION_THRESHOLD = 25;
+    constexpr ptrdiff_t INSERTION_THRESHOLD = 25;
 
     template<typename T, typename Cmp>
     static size_t hoaresPartition(T* first, T* last, Cmp comp)

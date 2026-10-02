@@ -10,13 +10,13 @@
 
 constexpr std::size_t TEST_SIZE = 100;
 
-TEST(QuickSortTest, EmptyArray)
+TEST(QuickSortTest, EmptyRange)
 {
-    int a[0]{ };
+    int a[1] = {42};
 
     sort::quicksort(a, a, std::less());
 
-    EXPECT_TRUE(std::is_sorted(a, a));
+    EXPECT_EQ(a[0], 42);
 }
 
 TEST(QuickSortTest, SingleElement)
@@ -252,7 +252,7 @@ TEST(QuickSortTest, CustomType)
     struct Person
     {
         std::string name;
-        int age;
+        int age{ };
 
         bool operator==(const Person& other) const
         {
